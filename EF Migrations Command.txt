@@ -1,0 +1,8 @@
+EF Core Migrations Command 
+
+- Go to tools
+- Click the NuGet Package Manager Console
+
+To Add Migration
+*Add-Migration "Name of Migration"
+*Update-Database

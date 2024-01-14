@@ -1,0 +1,13 @@
+Connection String Hack
+
+- Go to SQL Server Objects Explrorer
+- Click Add SQL Server
+- Back to Sql Server Management Studio
+- Click the main database
+- right click it and click the properties
+- Get the Name
+- Back to vs studio and paste in the server name and choose the database name
+- click the database in sql server object
+- dropdown the databases
+- click the database
+- right click, and click the properties and get the connection string 

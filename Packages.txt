@@ -1,0 +1,3 @@
+Packages in Entity Framework Core required to install
+- Microsoft.EntityFrameworkCore.SqlServer
+- Microsoft.EntityFrameworkCore.Tools
