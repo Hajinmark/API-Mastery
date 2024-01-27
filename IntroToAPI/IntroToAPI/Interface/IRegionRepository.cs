@@ -7,7 +7,7 @@ namespace IntroToAPI.Interface
     {
         Task<RegionModelResponse> AddRegion(Region obj);
         Task<List<Region>> DisplayRegion();
-        Task<Region> RegionByCode(string code);
+        Task<Region?> RegionByCode(string code);
         Task<Region> ModifyRegionDetails(Region obj);
     }
 }

@@ -18,6 +18,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectio
 
 // Repository Pattern dependency injection
 builder.Services.AddScoped<IRegionRepository, RegionRepository>();
+builder.Services.AddScoped<IDifficultyRepository, DifficultyRepository>();
 
 
 var app = builder.Build();

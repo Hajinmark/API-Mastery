@@ -1,7 +1,5 @@
 ﻿using IntroToAPI.Interface;
-using IntroToAPI.ModelResponse;
 using IntroToAPI.Models.Domain;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntroToAPI.Controllers
@@ -14,10 +12,10 @@ namespace IntroToAPI.Controllers
 
         public RegionController(IRegionRepository _regionRepository)
         {
-            this._regionRepository = _regionRepository; 
+            this._regionRepository = _regionRepository;
         }
 
-        [HttpPost]
+        [HttpPost("CreateNewRegion")]
         public async Task<IActionResult> CreateNewRegion(Region obj)
         {
             try
@@ -25,81 +23,73 @@ namespace IntroToAPI.Controllers
                 var region = await _regionRepository.AddRegion(obj);
 
                 if (region.Success)
+                {
                     return Ok(region);
+                }
 
-                else
-                    return BadRequest(region);
+                return BadRequest(region);
             }
 
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
-
         }
 
-        [HttpGet]
-        public async Task<IActionResult> DisplayAllRegions()
+        [HttpGet("AllRegions")]
+        public async Task<IActionResult> AllRegions()
         {
             var region = await _regionRepository.DisplayRegion();
 
             try
             {
-                if(region == null)
+                if (region != null)
                 {
-                    return NotFound();
+                    return Ok(region);
                 }
 
                 else
-                    return Ok(region);
+                {
+                    return BadRequest(region);
+                }
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return StatusCode(500, new RegionModelResponse { Success = false, Message = ex.Message });
-            }
-        }
-
-        [HttpGet("code")]
-        public async Task<IActionResult> DisplayRegionByCode(string code)
-        {
-            var region = await _regionRepository.RegionByCode(code);
-
-            try
-            {
-                if (region == null)
-                    return NotFound();
-
-                else
-                    return Ok(region);
-            }
-
-            catch(Exception ex)
-            {
-                return BadRequest(new RegionModelResponse { Success = false, Message = ex.Message});
+                return StatusCode(00, ex.Message);
             }
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateRegionDetail(Region obj)
+        public async Task<IActionResult> UdateRegions(Region obj)
         {
             try
             {
-                var updateRegion = await _regionRepository.ModifyRegionDetails(obj);    
+                var region = await _regionRepository.ModifyRegionDetails(obj);
 
-                if(updateRegion == null)
+                if (region != null)
                 {
-                    return NotFound("Code does not exist");
+                    return Ok(region);
                 }
 
-                return Ok(updateRegion);
+                else
+                {
+                    return BadRequest(region);
+                }
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetRegionByCode(string code)
+        {
+            var regionCode = await _regionRepository.RegionByCode(code);
+
+            return Ok(regionCode);
+        }
     }
 }

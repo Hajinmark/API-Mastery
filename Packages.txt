@@ -1,3 +1,9 @@
 Packages in Entity Framework Core required to install
 - Microsoft.EntityFrameworkCore.SqlServer
 - Microsoft.EntityFrameworkCore.Tools
+
+Packages in Authentication required to install
+-Microsoft.AspNetCore.Authentication.JwtBearer
+-Microsoft.IdentityModel.Tokens
+-System.IdentityModel.Tokens.Jwt
+-Microsoft.AspNetCore.Identity.EntityFrameworkCore
