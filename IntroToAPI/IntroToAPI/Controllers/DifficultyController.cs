@@ -1,5 +1,8 @@
 ﻿using IntroToAPI.Interface;
+using IntroToAPI.ModelResponse;
 using IntroToAPI.Models.Domain;
+using IntroToAPI.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntroToAPI.Controllers
@@ -113,6 +116,27 @@ namespace IntroToAPI.Controllers
 
                 return BadRequest(difficulty);
 
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("InsertWalk")]
+        public async Task<IActionResult> InsertWalk(WalkViewModel obj)
+        {
+            try
+            {
+                var walk = await _difficultyRepository.AddWalk(obj);
+
+                if (walk != null)
+                {
+                    return Ok(walk);
+                }
+
+                return BadRequest(walk);
             }
 
             catch (Exception ex)

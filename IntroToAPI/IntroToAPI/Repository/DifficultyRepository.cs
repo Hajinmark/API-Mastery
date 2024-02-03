@@ -1,6 +1,9 @@
-﻿using IntroToAPI.Data;
+﻿using System.Linq.Expressions;
+using IntroToAPI.Data;
 using IntroToAPI.Interface;
+using IntroToAPI.ModelResponse;
 using IntroToAPI.Models.Domain;
+using IntroToAPI.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntroToAPI.Repository
@@ -18,7 +21,7 @@ namespace IntroToAPI.Repository
             try
             {
                 var isDifficultyExist = await _dbContext.Difficulties.Where(x => x.Name == obj.Name).FirstOrDefaultAsync();
-
+                    
                 if(isDifficultyExist == null)
                 {
                     var addDifficulty = new Difficulty()
@@ -40,6 +43,56 @@ namespace IntroToAPI.Repository
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task<RegionModelResponse> AddWalk(WalkViewModel obj)
+        {
+            try
+            {
+
+                var region = new Region()
+                {
+                    Id = Guid.NewGuid(),
+                    Code = obj.Code,
+                    Name = obj.Name,
+                    RegionImageUrl = obj.RegionImageUrl
+                };
+
+                await _dbContext.Regions.AddAsync(region);
+                await _dbContext.SaveChangesAsync();
+
+                var difficulty = new Difficulty()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = obj.Name,
+                };
+
+                await _dbContext.Difficulties.AddAsync(difficulty);
+                await _dbContext.SaveChangesAsync();
+
+                var walk = new Walk()
+                {
+                    Id = Guid.NewGuid() ,
+                    Name = obj.Name,
+                    Description = obj.Description,
+                    LengthInKm  = obj.LengthInKm,
+                    WalkImageUrl  = obj.WalkImageUrl,
+                    RegionId = region.Id,
+                    DifficultyId = difficulty.Id
+                };
+
+                await _dbContext.Walks.AddAsync(walk);
+                await _dbContext.SaveChangesAsync();
+
+                return new RegionModelResponse() { Success = true, Message = "Inserted"};
+
+            }
+
+            catch(Exception ex)
+            {
+                return new RegionModelResponse() { Success = false, Message = ex.Message };
+            }
+               
         }
 
         public async Task<List<Difficulty>> FilterDifficulty(string name)

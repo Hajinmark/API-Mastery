@@ -9,5 +9,7 @@ namespace IntroToAPI.Interface
         Task<List<Region>> DisplayRegion();
         Task<Region?> RegionByCode(string code);
         Task<Region> ModifyRegionDetails(Region obj);
+        Task<List<Region>> FilterRegion(string code);
+        Task<List<Region>> SortRegion(string sortBy, bool ascending);
     }
 }

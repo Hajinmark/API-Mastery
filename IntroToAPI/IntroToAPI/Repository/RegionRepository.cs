@@ -56,6 +56,27 @@ namespace IntroToAPI.Repository
             return regionList;  
         }
 
+        public async Task<List<Region>> FilterRegion(string code)
+        {
+            try
+            {
+                var region = _dbContext.Regions.AsQueryable();
+
+                if(string.IsNullOrWhiteSpace(code) == false)
+                {
+                    region = region.Where(x => x.Code.Contains(code));
+                    return await region.ToListAsync();
+                }
+
+                return null;
+            }
+
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<Region> ModifyRegionDetails(Region obj)
         {
             var isRegionExist = await _dbContext.Regions.FirstOrDefaultAsync(x => x.Code == obj.Code);
@@ -88,6 +109,30 @@ namespace IntroToAPI.Repository
         {
             var regionCode = await _dbContext.Regions.Where(x => x.Code == code).FirstOrDefaultAsync();
             return regionCode;
+        }
+
+        public async Task<List<Region>> SortRegion(string sortBy, bool ascending)
+        {
+            try
+            {
+                var region = _dbContext.Regions.AsQueryable();
+
+                if(string.IsNullOrWhiteSpace(sortBy) == false)
+                {
+                    if(sortBy.Equals("Code"))
+                    {
+                        region = ascending ? region.OrderBy(x=>x.Code) : region.OrderByDescending(x=>x.Code);
+                        return await region.ToListAsync();
+                    }
+
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

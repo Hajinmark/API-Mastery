@@ -91,5 +91,47 @@ namespace IntroToAPI.Controllers
 
             return Ok(regionCode);
         }
+
+        [HttpGet("FilterRegion")]
+        public async Task<IActionResult> FilterRegion(string code)
+        {
+            try
+            {
+                var region = await _regionRepository.FilterRegion(code);
+
+                if(region != null)
+                {
+                    return Ok(region);
+                }
+
+                return BadRequest(region);  
+            }
+
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("SortRegion")]
+        public async Task<IActionResult> SortRegion(string sortBy, bool isAscending)
+        {
+            try
+            {
+                var region = await _regionRepository.SortRegion(sortBy, isAscending);
+
+                if(region != null)
+                {
+                    return Ok(region);
+                }
+
+                return BadRequest(region);
+            }
+
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

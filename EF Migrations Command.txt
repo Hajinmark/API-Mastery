@@ -6,3 +6,9 @@ EF Core Migrations Command
 To Add Migration
 *Add-Migration "Name of Migration"
 *Update-Database
+
+If there are more 2 or more DatabaseContext
+the command will be
+
+*Add-Migration "<Message>" -Context "DBContextName"
+*Update-Database -Context "DBContextName"
